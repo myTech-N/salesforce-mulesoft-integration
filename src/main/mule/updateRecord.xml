@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="updateRecordFlow" doc:id="6a9d4559-a8cf-40ca-adcc-d2d3f2de1f3e" >
+		<http:listener doc:name="Listener" doc:id="37873abd-c957-41b5-9a2a-f2f27877968e" config-ref="HTTP_Listener_config" path="/update1"/>
+		<salesforce:query doc:name="Query" doc:id="51dcea72-983c-411d-9e80-15370097ff0d" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT AccountNumber,BillingCity,Id,Name,Phone FROM Account WHERE AccountNumber = 'account']]></salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[output application/java
+---
+{
+	"account" : attributes.queryParams.acc
+}]]]></salesforce:parameters>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="0b401393-aede-4881-aa8c-e1a5289992ac" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+    [{
+	Id: payload[0].Id,
+	Name: "Test name updated",
+	BillingCity: "Fort washington",
+	Phone: "5665757787",
+	AccountNumber: "CC978213"
+}]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:update doc:name="Update" doc:id="fd4e3b9e-527c-4707-a43a-e610512dfe87" config-ref="Salesforce_Config" type="Account"/>
+		<ee:transform doc:name="Transform Message" doc:id="1fd28879-a3b1-40a4-83e9-fd24256c7d0f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output Application/json
+---
+"updated!"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

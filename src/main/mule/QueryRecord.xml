@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bab33b81-7714-46fa-b827-d253948e0688" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="0c39191c-384b-4c27-a35d-429478b24227" >
+		<salesforce:basic-connection username="negussiea27@gmail.com" password="0427negus@S" securityToken="vIP7qAIyYHC6lbfJHJwUxEVDC" />
+	</salesforce:sfdc-config>
+	<flow name="QueryRecordFlow" doc:id="b220b1fe-b7c2-4dc0-a0ad-e99510cda29f" >
+		<http:listener doc:name="Listener" doc:id="1d7cb684-630b-446c-b413-90f4d5260135" config-ref="HTTP_Listener_config" path="/quesry1"/>
+		<salesforce:query doc:id="b6eeaaa4-0c12-44ca-b2a5-71b14dbe8ef3" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT AccountId,Birthdate,Email,Name FROM Contact]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="785272e5-da90-4457-9c1f-861ebea2b6b7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
