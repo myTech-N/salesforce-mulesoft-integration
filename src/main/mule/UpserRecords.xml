@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="UpserRecordsFlow" doc:id="a9230a02-c914-4c64-a547-fb3dc819e98b" >
-		<http:listener doc:name="Listener" doc:id="112f81e1-72bc-450e-88c1-322013c80aec" config-ref="HTTP_Listener_config" path="/upsert"/>
+		<http:listener doc:name="Listener" doc:id="112f81e1-72bc-450e-88c1-322013c80aec" config-ref="HTTP_Listener_config" path="/upsertt"/>
 		<ee:transform doc:name="Transform Message" doc:id="87ceb38d-ed7a-4dc4-9ae7-db1686954183" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
