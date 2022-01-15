@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 output application/java
 ---
 payload map ( payload01 , indexOfPayload01 ) -> {
-	LastName: payload01.LastName,
+	LastName: payload01.LastNameddd,
 	FirstName: payload01.FirstName,
 	Phone: payload01.mobile,
 	Email: payload01.email
